@@ -1,20 +1,46 @@
+<div align="center">
+
 # Gesture-to-Text Communication System
 
-This project currently contains a PC-side webcam hand-detection prototype. It uses MediaPipe Hand Landmarker to detect one hand, draw its landmark points and connections on a live camera feed, and report when a hand is detected.
+**A webcam-based hand-tracking prototype and the starting point for gesture-driven communication.**
 
-> Gesture recognition, text conversion, and ESP32 communication are not implemented in this prototype yet.
+<br>
 
-## Requirements
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
+![OpenCV](https://img.shields.io/badge/OpenCV-Computer%20Vision-5C3EE8?logo=opencv&logoColor=white)
+![MediaPipe](https://img.shields.io/badge/MediaPipe-Hand%20Landmarker-0097A7)
 
-- Python 3.10 or newer
+</div>
+
+---
+
+## Overview
+
+The current PC-side prototype uses your webcam and MediaPipe Hand Landmarker to detect a hand, draw its landmarks and connections over the live video, and report when a hand is detected.
+
+> **Current scope:** This repository currently implements hand detection only. Gesture classification, text conversion, and ESP32 communication are planned extensions, not implemented features.
+
+## Features
+
+- Live webcam video with a mirrored preview
+- Detection of up to one hand
+- On-screen hand landmark and connection drawing
+- Included MediaPipe hand landmark model—no separate model download required
+- Press **Esc** to close the preview
+
+## Quick start
+
+### Prerequisites
+
+- Python 3.10 or later
 - A webcam
-- Windows, macOS, or Linux with a graphical display for the OpenCV camera window
+- A graphical desktop session for the OpenCV preview window
 
-The hand landmark model is included at `pc_side/hand_landmarker.task`; no separate model download is needed.
+### Install
 
-## Setup
+Run these commands from the project root.
 
-From the project root, create and activate a virtual environment, then install the dependencies:
+**Windows (PowerShell)**
 
 ```powershell
 py -m venv .venv
@@ -22,29 +48,44 @@ py -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-On macOS or Linux, activate the environment with:
+**macOS / Linux**
 
 ```sh
+python3 -m venv .venv
 source .venv/bin/activate
+python -m pip install -r requirements.txt
 ```
 
-## Run
-
-From the project root:
+### Start hand detection
 
 ```sh
 python pc_side/m1_hand_detect.py
 ```
 
-The live webcam window is mirrored for convenience. Press **Esc** to exit. The script uses camera index `0` by default; if your webcam uses a different index, change `cv2.VideoCapture(0)` in `pc_side/m1_hand_detect.py`.
+The live preview opens in a window. Press **Esc** to exit.
 
-If the camera cannot be opened, check that it is connected, available to other applications, and permitted by your operating system's camera privacy settings.
+## Troubleshooting
 
-## Project layout
+| Issue | What to check |
+| --- | --- |
+| Camera cannot be accessed | Connect the camera, close other applications using it, and check your operating system's camera permissions. |
+| Wrong camera is selected | The script uses camera index `0`. If needed, change `cv2.VideoCapture(0)` in `pc_side/m1_hand_detect.py` to the index for your camera. |
+| No preview appears | Run the program in a desktop session that supports OpenCV windows; a headless terminal will not display the preview. |
+
+## Project structure
 
 ```text
-pc_side/
-  hand_landmarker.task   MediaPipe hand landmark model
-  m1_hand_detect.py      Webcam hand detection and landmark drawing
-requirements.txt         Python dependencies
+.
+├── pc_side/
+│   ├── hand_landmarker.task   # MediaPipe model asset
+│   └── m1_hand_detect.py      # Webcam capture and hand detection
+└── requirements.txt           # Python package dependencies
+```
+
+## Dependencies
+
+The Python packages are listed in [`requirements.txt`](requirements.txt) and can be installed with:
+
+```sh
+python -m pip install -r requirements.txt
 ```
